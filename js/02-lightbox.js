@@ -5,6 +5,11 @@ const refs = {
   galleryList: document.querySelector(".gallery"),
 };
 
+const gallerySettingsObject = {
+  captionsData: "alt",
+  captionDelay: 250,
+};
+
 const makeGalleryMarkup = () => {
   return galleryItems
     .map(({ preview, original, description }) => {
@@ -21,7 +26,4 @@ const render = () => {
 
 render();
 
-let gallery = new SimpleLightbox(".gallery a", {
-  captionsData: "alt",
-  captionDelay: 250,
-});
+let gallery = new SimpleLightbox(".gallery a", gallerySettingsObject);

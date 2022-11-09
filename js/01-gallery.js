@@ -1,10 +1,22 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-const instance = basicLightbox.create("");
+const instanceSettingsObject = {
+  onShow: (instance) => {
+    refs.body.addEventListener("keydown", onEscModalClose);
+    refs.modal.addEventListener("click", onClickModalClose);
+  },
+  onClose: (instance) => {
+    refs.body.removeEventListener("keydown", onEscModalClose);
+    refs.modal.removeEventListener("click", onClickModalClose);
+  },
+};
+
+const instance = basicLightbox.create("", instanceSettingsObject);
 
 const refs = {
   galleryList: document.querySelector(".gallery"),
+  body: document.querySelector("body"),
   modal: instance.element(),
 };
 
@@ -20,16 +32,20 @@ const render = () => {
   refs.galleryList.innerHTML = makeGalleryMarkup();
 };
 
-const onEscmodalClose = (e) => {
-  if (e.keyCode === 27) {
+const onEscModalClose = (e) => {
+  if (e.key === "Escape") {
     instance.close();
   }
+};
+
+const onClickModalClose = (e) => {
+  instance.close();
 };
 
 const handleClick = (e) => {
   e.preventDefault();
 
-  if (e.target === e.currentTarget) {
+  if (e.target.nodeName !== "IMG") {
     return;
   }
 
@@ -43,4 +59,4 @@ const handleClick = (e) => {
 render();
 
 refs.galleryList.addEventListener("click", handleClick);
-refs.galleryList.addEventListener("keydown", onEscmodalClose);
+// refs.galleryList.addEventListener("keydown", onEscmodalClose);
